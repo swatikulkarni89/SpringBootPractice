@@ -123,13 +123,12 @@ Output output;
         Customer customer = customerRepo.getReferenceById(address_id);
         customerAddress.setAddress_id(address_id);
         customerAddress.setAddress(address.getAddress());
-        //customerAddress.setAddress2(address.getAddress2());
+        customerAddress.setAddress2(address.getAddress2());
         customerAddress.setActive(customer.getActive());
         customerAddress.setFirst_name(customer.getFirst_name());
         customerAddress.setLast_name(customer.getLast_name());
         customerAddress.setEmail(customer.getEmail());
 
-        //Optional<CustomerAddress> getCustomerByID = customerAddressRepo.findById(address_id);
 
 return customerAddress;
     }
@@ -148,10 +147,10 @@ return customerAddress;
         return list;
     }
 
-    @GetMapping("/list/customerAddressService1")
-    public ResponseEntity<Object>  customerAddressbyService1(){
+    @GetMapping("/list/customerAddressService1/{id}")
+    public ResponseEntity<Object>  customerAddressbyService1(@PathVariable(value = "id") int address_id){
            // Output output=new Output();
-        List<CustomerAddress> customerAddress1=output.getOutput();
+        List<CustomerAddress> customerAddress1=output.getOutput(address_id);
 
         if (customerAddress1 != null) {
             System.out.println("User : " + customerAddress1);
@@ -159,7 +158,7 @@ return customerAddress;
         } else {
             return ResponseEntity.notFound().build();
         }
-        //return customerAddress1;
+
 
     }
 

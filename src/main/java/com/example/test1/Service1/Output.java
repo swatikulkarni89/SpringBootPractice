@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class Output {
     //public static void main(String[]args){
-    public List<CustomerAddress> getOutput() {
+    public List<CustomerAddress> getOutput(int address_id) {
         // Stepou 2: Making connection using
         // Connection type and inbuilt function on
         Connection con = null;
@@ -22,7 +22,7 @@ public class Output {
 
         // Try block to catch exception/s
         try {
-            int address_id = 7;
+
             String addressId = String.valueOf(address_id);
             // SQL command data stored in String datatype
             String sql = "Select a.address_id,c.first_name,c.last_name,c.active,c.email,a.address,a.city_id,a.postal_code from sakila.address as a left join  sakila.customer as c on a.address_id=c.address_id where a.address_id=";
