@@ -5,6 +5,7 @@ import com.example.test1.Repo1.AddressRepo;
 import com.example.test1.Repo1.CustomerRepo;
 //import com.example.test1.Service1.Output;
 import com.example.test1.Service1.Output;
+import com.example.test1.Service2.UploadFileService;
 import com.example.test1.domenModel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +36,14 @@ public class testController {
     CustomerAddress customerAddress;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    UploadFileService uploadFileService;
 @Autowired
 Output output;
+FileWriter writer=new FileWriter("D:\\projects\\spring_boot\\test1\\test1\\output.txt");
+
+    public testController() throws IOException {
+    }
 
     @GetMapping
     public List<Address> findAllUsers() {
@@ -148,13 +158,22 @@ return customerAddress;
     }
 
     @GetMapping("/list/customerAddressService1/{id}")
-    public ResponseEntity<Object>  customerAddressbyService1(@PathVariable(value = "id") int address_id){
+    public ResponseEntity<Object>  customerAddressbyService1(@PathVariable(value = "id") int address_id) throws IOException {
            // Output output=new Output();
         List<CustomerAddress> customerAddress1=output.getOutput(address_id);
 
         if (customerAddress1 != null) {
             System.out.println("User : " + customerAddress1);
+            PrintWriter out = new PrintWriter(writer);
+            out.write(customerAddress1.toString());
+            out.close();
+            uploadFileService.uploadFile();
+
             return ResponseEntity.ok().body(customerAddress1);
+
+            // Write the API output to the file
+
+
         } else {
             return ResponseEntity.notFound().build();
         }
